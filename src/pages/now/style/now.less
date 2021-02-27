@@ -1,0 +1,164 @@
+.now {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.pageBox {
+  position: relative;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.page {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition: left 1s;
+}
+
+.itemBox {
+  position: relative;
+}
+.itemNoteBox {
+  position: relative;
+  box-sizing: border-box;
+  width: 90vw;
+  margin: 20px auto;
+  text-align: left;
+  font-weight: 700;
+  overflow: hidden;
+  padding: 10px;
+  border: solid;
+  border-radius: 10px;
+  word-wrap: break-word; //溢出换行
+  white-space: pre-line;
+  line-height: 1.5;
+}
+.itemBoxMain {
+  box-sizing: border-box;
+  position: relative;
+  text-align: left;
+  padding: 10px;
+  margin: 20px auto;
+  display: inline-block;
+  width: 90vw;
+  border-radius: 10px;
+  border: solid;
+  overflow: hidden;
+  padding-left: 0;
+}
+.itemBoxInverse {
+  color: #fff;
+  background-color: #000;
+  border: none;
+}
+.itemNote {
+  height: 20px;
+  text-align: right;
+  line-height: 20px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+.item {
+  display: inline-block;
+  margin: 5px;
+  padding: 0px 5px;
+  height: 25px;
+  line-height: 25px;
+  border-radius: 5px;
+  font-weight: 700;
+}
+.itemTimeBox {
+  position: relative;
+  width: 90vw;
+  margin: 20px auto;
+  color: #888;
+}
+
+
+
+// 特殊
+.surpriseBox {
+  position: relative;
+  box-sizing: border-box;
+  width: 90vw;
+  border: solid;
+  font-weight: 700;
+  margin: 20px auto;
+  padding: 10px;
+  border-radius: 10px;
+  .surpriseMainBox {
+    display: flex;
+    .surpriseBoxAvatar {
+      flex: 0 0 50px;
+      text-align: center;
+      span {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+    }
+    .surpriseBoxRecord {
+      flex: 1 1 auto;
+      padding: 5px 0 0 10px;
+      text-align: left;
+      .itemNote {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+      }
+    }
+  }
+}
+.taskBox {
+  position: relative;
+  text-align: left;
+  width: 90vw;
+  margin: auto;
+  .taskItemBox {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    position: relative;
+    box-sizing: border-box;
+    width: 40vw;
+    height: 80px;
+    border: solid;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 2.5vw;
+    .itemCover {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      position: absolute;
+      top: -80px;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-size: 25px;
+      font-weight: 700;
+      transition: top .3s;
+    }
+    .taskBoxAvatar {
+      flex: 0 0 50px;
+      text-align: center;
+      span {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+    }
+    .taskBoxNum {
+      flex: 1 1 auto;
+      font-size: 30px;
+      line-height: 60px;
+      font-weight: 400;
+    }
+  }
+}
