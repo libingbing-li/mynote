@@ -1,0 +1,43 @@
+.sidebar {
+    position: absolute;
+    left: -200px;
+    font-size: 20px;
+    width: 200px;
+    height: 100vh;
+    background: #000;
+    color: #fff;
+    transition: left .5s;
+    div {
+        height: 60px; 
+        line-height: 60px;
+        margin: 0 10px;
+        span {
+            font-size: 30px;
+        }
+        &:hover {
+            background: rgba(255, 255, 255, .8);
+        }
+    }
+    .title {
+        height: 50px;
+        text-align: left;
+        padding: 0 10px;
+        border: 3px solid #fff;
+        margin: 20px;
+        &:hover {
+            background: #000;
+        }
+    }
+    .description {
+        width: 90%;
+        font-size: 10px;
+        height: 30px;
+        position: absolute;
+        bottom: 10px;
+        text-align: right;
+        line-height: 16px;
+        &:hover {
+            background: #000;
+        }
+    }
+}

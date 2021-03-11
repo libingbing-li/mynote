@@ -1,0 +1,130 @@
+.newnote {
+	display:flex;
+	flex-direction: column;
+  position: absolute;
+  z-index: 2;
+  bottom: 0vh;
+  left: 5vw;
+  box-sizing: border-box;
+  transition: bottom .5s;
+  height: 80vh;
+  width: 90vw;
+  /* border: solid 3px #000; */
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border: 1px #ddd solid;
+  box-shadow: 0px 0px 5px 3px #ddd;
+  background: #fff;
+  color: #000;
+	div {
+		flex: 0 0 auto;
+	}
+}
+
+.newnote_time {
+	display: flex;
+	justify-content: space-between;
+  font-weight: 700;
+  margin: 10px 15px;
+	span {
+		color: #999;
+	}
+}
+.newnote_main {
+	flex: 1 1 auto !important;
+	display:flex;
+	flex-direction: column;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	div {
+		flex: 0 0 auto;
+	}
+	.newnote_title {
+		box-sizing: border-box;
+		width: 100%;
+		font-size: 20px;
+		margin: 10px 0;
+		text-align: left;
+		padding: 0 15px;
+		border: none;
+	}
+	
+	.newnote_location {
+		font-weight: 700;
+		margin: 5px 15px;
+		padding: 5px;
+		text-align: left;
+		border-bottom: solid 1px #eee;
+		span {
+			font-weight: 500;
+			font-size: 0.8em;
+			padding: 3px 5px;
+			color: #555;
+		}
+	}
+	
+	.newnote_weather {
+		font-weight: 700;
+		margin: 5px 15px;
+		padding: 5px;
+		text-align: left;
+		border-bottom: solid 1px #eee;
+		span {
+			font-weight: 500;
+			font-size: 0.8em;
+			padding: 3px 5px;
+			color: #555;
+		}
+	}
+	
+	.newnote_mood {
+		font-weight: 700;
+		margin: 5px 15px;
+		padding: 5px;
+		text-align: left;
+		border-bottom: solid 1px #eee;
+		span {
+			font-weight: 500;
+			font-size: 0.8em;
+			padding: 3px 5px;
+			color: #555;
+		}
+	}
+	
+	.newnote_text {
+		flex: 1 1 auto !important;
+		text-align: left;
+		margin: 10px 15px;
+		word-wrap: break-word; //溢出换行
+		white-space: pre-line; //textarea中的换行符显示
+		line-height: 1.25;
+		div {
+			text-align: left;
+			word-wrap: break-word; //溢出换行
+			white-space: pre-line; //textarea中的换行符显示
+		}
+	}
+}
+
+
+
+.newnote_operatingSpace {
+	display: flex;
+	justify-content: space-between;
+	font-size: 20px;
+	padding: 15px;
+	width: 100%;
+	box-sizing: border-box;
+	border-top: solid 1px #ddd;
+	color: #999;
+	background: #fff;
+	.newnote_colorbtn {
+		box-sizing: border-box;
+		display: inline-block;
+		width: 23px;
+		height: 23px;
+		border-radius: 50%;
+		border: solid 4px #999;
+		background: #000;
+	}
+}
