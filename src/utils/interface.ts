@@ -8,7 +8,7 @@ export interface NoteShow {
   timeId: number;
   title: string;
   data: string;
-  tags: Array<any>;
+  tags: Array<string>;
 }
 
 
@@ -19,7 +19,10 @@ export interface ModelShow {
   notedata: Array<NoteShow>;
 }
 export interface ModelNote {
-  note: NoteShow;
+  timeId: number;
+  title: string;
+  data: string;
+  tags: Array<string>;
 }
 
 // 全部数据格式

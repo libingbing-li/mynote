@@ -27,6 +27,9 @@ class Index extends React.Component<ModelIndex & {dispatch: any}> {
 		nowPage: 1,
 	}
 
+	componentDidMount = async () => {
+	}
+
 
 	// 下拉行为 - 刷新
 	slideBottom = (e:any) => {
@@ -212,7 +215,7 @@ class Index extends React.Component<ModelIndex & {dispatch: any}> {
 	// 进入添加日记
 	addNote = () => {
 		console.log('addNote');
-		history.push('/note?isEdit=true');
+		history.push('/note?timeId=null');
 	}
 
 
@@ -285,4 +288,5 @@ class Index extends React.Component<ModelIndex & {dispatch: any}> {
 }
 
 export default connect((state: any) => ({
+	...state.index,
 }))(Index);

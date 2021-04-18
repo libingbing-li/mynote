@@ -1,6 +1,6 @@
 import LZString from 'lz-string';
 import app from '../utils/app';
-import { FoodIngredient, FoodIngredientClass, AllData } from '../utils/interface'; 
+import { AllData } from '../utils/interface'; 
 import indexedDB from '../utils/indexedDB';
 
 

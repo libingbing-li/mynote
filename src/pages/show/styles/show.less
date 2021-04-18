@@ -16,6 +16,7 @@
     margin: 15px 0;
     .noteShow_time {
       text-align: right;
+      padding-bottom: 5px;
     }
     .noteShow_title {
       font-size: 1.3em;
@@ -36,12 +37,15 @@
     }
     .noteShow_tags {
       text-align: left;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       span {
         display: inline-block;
-        height: 15px;
+        height: 20px;
         font-size: 0.8em;
         text-align: center;
-        line-height: 15px;
+        line-height: 20px;
         border-radius: 3px;
         color: #555;
         background: #eee;
