@@ -14,7 +14,7 @@ import {
   VerticalAlignBottomOutlined,
   StarFilled
 } from '@ant-design/icons';
-import { FoodIngredient, FoodIngredientClass, ModelIndex } from '../../utils/interface';
+import { ModelIndex } from '../../utils/interface';
 import commonStyle from '@/common-styles/common.less';
 
 

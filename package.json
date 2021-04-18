@@ -25,6 +25,7 @@
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.3.9",
     "antd": "^4.12.3",
+    "braft-editor": "^2.3.9",
     "dva": "^2.4.1",
     "lint-staged": "^10.5.4",
     "lz-string": "^1.4.4",
