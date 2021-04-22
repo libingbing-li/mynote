@@ -193,7 +193,7 @@ class Index extends React.Component<ModelIndex & {dispatch: any}> {
 	}
 	// 关闭侧边栏
 	sidebarClose = () => {
-		console.log('sidebarShow');
+		console.log('sidebarClose');
 		const sidebar: any = document.querySelector(`#sidebar`);
 		const page: any = document.querySelector(`#index-page${this.state.nowPage}`);
 		const navbar: any = document.querySelector(`#navbar`);

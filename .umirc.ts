@@ -13,5 +13,6 @@ export default defineConfig({
   routes: [
     { path: '/', component: '@/pages/index' },
     { path: '/note', component: '@/pages/note/note' },
+    { path: '/alldata', component: '@/pages/setting/alldata' },
   ],
 });

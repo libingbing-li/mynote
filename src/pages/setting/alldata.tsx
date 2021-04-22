@@ -1,0 +1,67 @@
+import React from 'react';
+import {history} from 'umi';
+import moment from 'moment';
+import { connect, EffectsCommandMap, Model } from 'dva';
+import {
+	LeftOutlined,
+  VerticalAlignMiddleOutlined
+} from '@ant-design/icons';
+import {  } from '../../utils/interface';
+import indexedDB from '../../utils/indexedDB';
+import commonStyle from '@/common-styles/common.less';
+import styles from './styles/alldata.less';
+import app from '@/utils/app';
+
+
+
+interface IState {
+}
+// 展示日记，可以点击进入详情
+class AllData extends React.Component<{dispatch: any}> {
+	state: IState = {
+	}
+
+	componentDidMount = () => {
+		// 
+	}
+
+  // 后退清空数据
+	back = () => {
+		// this.props.dispatch({
+		// 	type: 'note/changeState',
+    //       payload: {
+    //         timeId: 0,
+    //         tags: [],
+    //         data: '',
+    //         title: '请输入标题',
+    //       }
+		// });
+		history.goBack();
+	}
+
+
+	
+	render() {
+		return (
+      <div className={styles.alldata}>
+        <div className={styles.title}>
+					<LeftOutlined onClick={this.back} />
+					<div>数据转移</div>
+					<VerticalAlignMiddleOutlined />
+				</div>
+        <div className={styles.tip}>复制框内文本导出/粘贴文本到框内导入</div>
+        <div className={styles.body}>
+          <textarea></textarea>
+        </div>
+        <div className={styles.btns}>
+          <div>导出</div>
+          <div>导入</div>
+        </div>
+      </div>
+		);
+	}
+}
+
+export default connect((state: any) => ({
+	...state.setting,
+}))(AllData);

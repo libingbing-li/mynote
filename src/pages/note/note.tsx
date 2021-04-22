@@ -5,11 +5,14 @@ import { ControlType } from 'braft-editor';
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
 import { connect, EffectsCommandMap, Model } from 'dva';
+import { Menu, Dropdown } from 'antd';
 import {
 	LeftOutlined,
 	CheckOutlined,
 	HighlightOutlined,
 	PlusOutlined,
+	DeleteOutlined,
+	EllipsisOutlined,
 } from '@ant-design/icons';
 import { ModelNote } from '../../utils/interface';
 import commonStyle from '@/common-styles/common.less';
@@ -18,12 +21,24 @@ import app from '@/utils/app';
 
 // 编辑器的控件
 const controls: Array<ControlType> = [
-	'text-color', 'bold', 'italic', 'underline', 'strike-through', 
-	'remove-styles', 'text-align', 
-	'headings', 'list-ul', 'list-ol', 
-	'hr', 
-	'media', 
+	'text-color', 'bold', 'italic', 'underline', 'strike-through',
+	'remove-styles', 'text-align',
+	'headings', 'list-ul', 'list-ol',
+	'hr',
+	'media',
 ];
+
+// // 详情-编辑-下拉菜单
+// const menu = (
+//   <Menu>
+//     <Menu.Item key="0">
+// 			<CheckOutlined onClick={this.saveNote} />
+//     </Menu.Item>
+//     <Menu.Item key="1">
+// 			<DeleteOutlined/>
+//     </Menu.Item>
+//   </Menu>
+// );
 
 interface IState {
 	isEdit: boolean;
@@ -43,33 +58,54 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
 	}
 
 	componentDidMount() {
-		let htmlContent = '';
 		const timeId = history.location.query?.timeId;
-		if(!(timeId === 'null')) {
+		if (!(timeId === 'null')) {
 			// 详情查看
+			// 在此处model数据更新
 			this.props.dispatch({
 				type: 'note/getNoteData',
 				payload: {
 					timeId: history.location.query?.timeId,
 				}
 			});
+			this.setState({
+				isEdit: false,
+			});
 		}
 		// 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
+		// 由于dispatch是异步操作，所以此时的props是上一次的props
 		this.setState({
-			editorState: BraftEditor.createEditorState(htmlContent)
+			editorState: BraftEditor.createEditorState(this.props.data), 
 		})
 	}
+
+	//在本处获取新的props并更新
+	componentWillReceiveProps = (nextProps: any) => {
+		// 此时异步操作完成，更改model数据后，在这个生命周期函数中发现props更新(此时是真正需要的props值)，然后更新state中的数据
+    this.setState({
+			editorState: BraftEditor.createEditorState(nextProps.data),
+		})
+  };
 
 	saveNote = () => {
 		// 在编辑器获得焦点时按下ctrl+s会执行此方法
 		// 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
 		this.props.dispatch({
-      type: 'note/saveNote',
-      payload: {
-        data: this.state.editorState.toHTML().toString(),
+			type: 'note/saveNote',
+			payload: {
+				data: this.state.editorState.toHTML().toString(),
 				goBack: history.goBack,
-      },
-    });
+			},
+		});
+	}
+
+	removeNote = () => {
+		this.props.dispatch({
+			type: 'note/removeNote',
+			payload: {
+				goBack: history.goBack,
+			},
+		});
 	}
 
 	handleEditorChange = (editorState: any) => {
@@ -78,11 +114,11 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
 
 	changeModelState = (proName: string, data: any) => {
 		this.props.dispatch({
-      type: 'note/changeState',
-      payload: {
-        [proName]: data,
-      },
-    });
+			type: 'note/changeState',
+			payload: {
+				[proName]: data,
+			},
+		});
 	}
 
 
@@ -95,13 +131,40 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
 			newtag: '',
 		});
 	}
-	
+
 	// 删除tag
 	deleteTag = (index: number) => {
-		if(!this.state.isEdit) { return; }
+		if (!this.state.isEdit) { return; }
 		let tags = this.props.tags;
 		tags.splice(index, 1);
 		this.changeModelState('tags', tags);
+	}
+
+
+	// 详情-编辑-下拉菜单
+	menu = (
+		<Menu>
+			<Menu.Item key="0" style={{textAlign: 'center'}}>
+				<CheckOutlined style={{margin: 0}} onClick={this.saveNote} />
+			</Menu.Item>
+			<Menu.Item key="1" style={{textAlign: 'center'}}>
+				<DeleteOutlined style={{margin: 0}} onClick={this.removeNote}/>
+			</Menu.Item>
+		</Menu>
+	);
+
+	// 后退清空数据
+	back = () => {
+		this.props.dispatch({
+			type: 'note/changeState',
+          payload: {
+            timeId: 0,
+            tags: [],
+            data: '',
+            title: '请输入标题',
+          }
+		});
+		history.goBack();
 	}
 
 
@@ -110,25 +173,41 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
 		return (
 			<div className={styles.note}>
 				<div className={styles.title}>
-					<LeftOutlined onClick={() => history.goBack()} />
+					<LeftOutlined onClick={this.back} />
 					<input
 						type='text'
 						value={this.props.title}
-						onChange={(e) => {this.changeModelState('title', e.target.value)}}
+						onChange={(e) => { this.changeModelState('title', e.target.value) }}
 					></input>
-					{this.state.isEdit ? <CheckOutlined onClick={this.saveNote} /> : <HighlightOutlined onClick={() => this.setState({isEdit: true})}/>}
+					{history.location.query?.timeId === 'null' ?
+						<CheckOutlined onClick={this.saveNote} />
+						: (this.state.isEdit ?
+							// <EllipsisOutlined onClick/>
+							<Dropdown overlay={this.menu} trigger={['click']}>
+								<EllipsisOutlined />
+							</Dropdown>
+							:
+							<HighlightOutlined onClick={() => this.setState({ isEdit: true })} />
+						)
+					}
 				</div>
-				<div className={styles.tags}>
-					{this.props.tags.length === 0 ? <span>暂无标签</span> : 
+				<div
+					className={styles.tags}
+					style={{
+						borderBottom: this.state.isEdit ? 'none' : 'solid 1px #eee',
+						paddingBottom: this.state.isEdit ? 0 : '5px',
+					}}
+				>
+					{this.props.tags.length === 0 ? <span>暂无标签</span> :
 						this.props.tags.map((tag: string, index: number) => {
 							return <span key={index} onClick={() => this.deleteTag(index)}>{tag}</span>
 						})
 					}
 				</div>
-				<div className={styles.addTag}>
+				<div className={styles.addTag} style={{ display: this.state.isEdit ? 'block' : 'none' }}>
 					<span>addTag: </span>
-					<input type="text" value={this.state.newtag} onChange={(e) => {this.setState({newtag: e.target.value})}}/>
-					<PlusOutlined onClick={this.addTag}/>
+					<input type="text" value={this.state.newtag} onChange={(e) => { this.setState({ newtag: e.target.value }) }} />
+					<PlusOutlined onClick={this.addTag} />
 				</div>
 				<div className="my-component">
 					<BraftEditor
@@ -136,7 +215,7 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
 						readOnly={this.state.isEdit ? false : true}
 						controls={this.state.isEdit ? controls : []}
 						onChange={this.handleEditorChange}
-						// onSave={this.submitContent}
+					// onSave={this.submitContent}
 					/>
 				</div>
 			</div>

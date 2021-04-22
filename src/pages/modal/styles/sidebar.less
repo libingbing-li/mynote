@@ -1,4 +1,5 @@
 .sidebar {
+    z-index: 2;
     position: absolute;
     left: -200px;
     font-size: 20px;
@@ -7,17 +8,6 @@
     background: #000;
     color: #fff;
     transition: left .5s;
-    div {
-        height: 60px; 
-        line-height: 60px;
-        margin: 0 10px;
-        span {
-            font-size: 30px;
-        }
-        &:hover {
-            background: rgba(255, 255, 255, .8);
-        }
-    }
     .title {
         height: 50px;
         text-align: left;
@@ -39,5 +29,11 @@
         &:hover {
             background: #000;
         }
+    }
+    .item {
+        font-size: 16px;
+        padding: 10px 0;
+        margin: 0 20px;
+        border-bottom: solid 1px;
     }
 }

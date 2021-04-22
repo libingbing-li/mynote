@@ -107,7 +107,7 @@ class IndexedDB {
 
   
   // 删除
-  remove = (name: string, time: number, dataName?: string, dataNum?: number) => {
+  remove = (name: string, time: number) => {
     const _this = this;
     const promise = new Promise((resolve, reject) => {
       let objectStore = _this.database?.transaction(name, 'readwrite').objectStore(name);

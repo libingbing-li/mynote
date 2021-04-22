@@ -17,6 +17,8 @@ export interface ModelIndex {
 }
 export interface ModelShow {
   notedata: Array<NoteShow>;
+  minTime: number;
+  maxTime: number;
 }
 export interface ModelNote {
   timeId: number;
