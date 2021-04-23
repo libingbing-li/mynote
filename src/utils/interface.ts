@@ -26,6 +26,9 @@ export interface ModelNote {
   data: string;
   tags: Array<string>;
 }
+export interface ModelSetting {
+  dataTxt: string;
+}
 
 // 全部数据格式
 export interface AllData {

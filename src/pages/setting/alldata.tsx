@@ -4,9 +4,9 @@ import moment from 'moment';
 import { connect, EffectsCommandMap, Model } from 'dva';
 import {
 	LeftOutlined,
-  VerticalAlignMiddleOutlined
+  VerticalAlignMiddleOutlined,
 } from '@ant-design/icons';
-import {  } from '../../utils/interface';
+import { ModelSetting } from '../../utils/interface';
 import indexedDB from '../../utils/indexedDB';
 import commonStyle from '@/common-styles/common.less';
 import styles from './styles/alldata.less';
@@ -17,7 +17,7 @@ import app from '@/utils/app';
 interface IState {
 }
 // 展示日记，可以点击进入详情
-class AllData extends React.Component<{dispatch: any}> {
+class AllData extends React.Component<ModelSetting & {dispatch: any}> {
 	state: IState = {
 	}
 
@@ -39,6 +39,18 @@ class AllData extends React.Component<{dispatch: any}> {
 		history.goBack();
 	}
 
+	export = () => {
+		this.props.dispatch({
+			type: 'setting/exportJson',
+		});
+	}
+
+	import = () => {
+		this.props.dispatch({
+			type: 'setting/importJson',
+		});
+	}
+
 
 	
 	render() {
@@ -51,11 +63,14 @@ class AllData extends React.Component<{dispatch: any}> {
 				</div>
         <div className={styles.tip}>复制框内文本导出/粘贴文本到框内导入</div>
         <div className={styles.body}>
-          <textarea></textarea>
+          <textarea 
+						// value={this.props.dataTxt} 
+						id="alldata"
+					></textarea>
         </div>
         <div className={styles.btns}>
-          <div>导出</div>
-          <div>导入</div>
+          <div onClick={this.export}>导出</div>
+          <div onClick={this.import}>导入</div>
         </div>
       </div>
 		);
