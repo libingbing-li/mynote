@@ -1,10 +1,11 @@
 import React from 'react';
-import {history} from 'umi';
+import moment from 'moment';
+import { history } from 'umi';
 import { connect, EffectsCommandMap, Model } from 'dva';
 import {
-	UnorderedListOutlined,
-	HighlightOutlined,
-	HighlightFilled
+  UnorderedListOutlined,
+  HighlightOutlined,
+  HighlightFilled,
 } from '@ant-design/icons';
 import SlideBox from '@/common-components/SlideBox';
 import TopBox from './modal/topBox';
@@ -18,258 +19,259 @@ import styles from './index.less';
 import app from '@/utils/app';
 
 interface IState {
-	nowPage: number; //当前处于哪个页面
+  nowPage: number; //当前处于哪个页面
 }
 
+class Index extends React.Component<ModelIndex & { dispatch: any }> {
+  state: IState = {
+    nowPage: 1,
+  };
 
-class Index extends React.Component<ModelIndex & {dispatch: any}> {
-	state: IState = {
-		nowPage: 1,
-	}
+  componentDidMount = () => {
+    moment.locale('zh-cn');
+  };
 
-	componentDidMount = async () => {
-	}
+  // 下拉行为 - 刷新
+  slideBottom = (e: any) => {
+    // 刷新
+    const refreshBox: any = document.querySelector(`#refreshBox`);
+    const page: any = document.querySelector(
+      `#index-page${this.state.nowPage}`,
+    );
+    const navbar: any = document.querySelector(`#navbar`);
+    let scrollTopNoZero = false;
+    switch (this.state.nowPage) {
+      case 1:
+        const t1: any = document.querySelector('#time-page1');
+        const t2: any = document.querySelector('#time-page2');
+        const t3: any = document.querySelector('#time-page3');
+        console.log(t3);
+        if (t1.scrollTop !== 0 || t2.scrollTop !== 0 || t3.scrollTop !== 0) {
+          scrollTopNoZero = true;
+        }
+        break;
+      case 2:
+        if (page.lastElementChild.lastElementChild.scrollTop !== 0) {
+          scrollTopNoZero = true;
+        }
+        break;
+      case 3:
+        const i1: any = document.querySelector('#info-page1');
+        const i2: any = document.querySelector('#info-page2');
+        const i3: any = document.querySelector('#info-page3');
+        if (i1.scrollTop !== 0 || i2.scrollTop !== 0 || i3.scrollTop !== 0) {
+          scrollTopNoZero = true;
+        }
+        break;
+    }
+    console.log(scrollTopNoZero);
+    if (scrollTopNoZero) {
+      return;
+    }
+    refreshBox.style.top = '0vh';
+    navbar.style.marginTop = '15vh';
+    if (this.state.nowPage === 3) {
+      this.props.dispatch({
+        type: 'info/init',
+      });
+    } else if (this.state.nowPage === 1) {
+      this.props.dispatch({
+        type: 'time/init',
+      });
+    } else {
+      this.props.dispatch({
+        type: 'now/init',
+      });
+    }
+    setTimeout(() => {
+      refreshBox.style.top = '-15vh';
+      navbar.style.marginTop = '0vh';
+    }, 1000);
+  };
+  // // 左滑行为
+  // slideLeft = () => {
+  // 	console.log('slideLeft');
+  // 	if(this.state.nowPage == 1) {
+  // 		return;
+  // 	}
+  // 	for(let i = 1; i <= 2; i++) {
+  // 		const page: any = document.querySelector(`#index-page${i}`);
+  // 		let left = Number(page.style.left.substring(0,page.style.left.length - 2));
+  // 		page.style.left = left + 100 + 'vw';
+  // 	}
+  // 	this.setState((state: any) => {
+  // 		if(state.nowPage - 1 === 2) {
+  // 			this.props.dispatch({
+  // 				type: 'info/init'
+  // 			});
+  // 		} else if(state.nowPage - 1 === 1) {
+  // 			this.props.dispatch({
+  // 				type: 'time/init'
+  // 			});
+  // 		} else {
+  // 			this.props.dispatch({
+  // 				type: 'now/init'
+  // 			});
+  // 		}
+  // 		return {
+  // 			nowPage: state.nowPage - 1,
+  // 		};
+  // 	});
+  // 	this.sidebarClose();
+  // }
+  // // 右滑行为
+  // slideRight = () => {
+  // 	console.log('slideRight');
+  // 	if(this.state.nowPage == 2) {
+  // 		return;
+  // 	}
+  // 	for(let i = 2; i >= 1; i--) {
+  // 		const page: any = document.querySelector(`#index-page${i}`);
+  // 		let left = Number(page.style.left.substring(0,page.style.left.length - 2));
+  // 		page.style.left = left - 100 + 'vw';
+  // 	}
+  // 	this.setState((state: any) => {
+  // 		if(state.nowPage + 1 === 2) {
+  // 			this.props.dispatch({
+  // 				type: 'info/init'
+  // 			});
+  // 		} else if(state.nowPage + 1 === 1) {
+  // 			this.props.dispatch({
+  // 				type: 'time/init'
+  // 			});
+  // 		} else {
+  // 			this.props.dispatch({
+  // 				type: 'now/init'
+  // 			});
+  // 		}
+  // 		return {
+  // 			nowPage: state.nowPage + 1,
+  // 		};
+  // 	});
+  // 	this.sidebarClose();
+  // }
 
+  // // 点击切换
+  // checkTab = () => {
+  // 	let page = 1;
+  // 	if(this.state.nowPage === 1) {
+  // 		page = 2;
+  // 	}
+  // 	if(page > this.state.nowPage) {
+  // 		// 右滑
+  // 		for(let i = this.state.nowPage; i < page ; i++){
+  // 			this.slideRight();
+  // 		};
+  // 	} else {
+  // 		// 左滑
+  // 		for(let i = this.state.nowPage; i > page ; i--){
+  // 			this.slideLeft();
+  // 		};
 
-	// 下拉行为 - 刷新
-	slideBottom = (e:any) => {
-		// 刷新
-		const refreshBox: any = document.querySelector(`#refreshBox`);
-		const page: any = document.querySelector(`#index-page${this.state.nowPage}`);
-		const navbar: any = document.querySelector(`#navbar`);
-		let scrollTopNoZero = false;
-		switch(this.state.nowPage) {
-			case 1: 
-			const t1: any = document.querySelector('#time-page1');
-			const t2: any = document.querySelector('#time-page2');
-			const t3: any = document.querySelector('#time-page3');
-			console.log(t3);
-			if(t1.scrollTop !== 0 ||
-				t2.scrollTop !== 0 ||
-				t3.scrollTop !== 0
-				) {
-					scrollTopNoZero = true;
-				}
-			break;
-			case 2:
-				if(page.lastElementChild.lastElementChild.scrollTop !== 0 ) {
-					scrollTopNoZero = true;
-				}
-				break;
-			case 3: 
-			const i1: any = document.querySelector('#info-page1');
-				const i2: any = document.querySelector('#info-page2');
-				const i3: any = document.querySelector('#info-page3');
-				if(i1.scrollTop !== 0 ||
-					i2.scrollTop !== 0 ||
-					i3.scrollTop !== 0
-					) {
-						scrollTopNoZero = true;
-					}
-				break;
-		}
-		console.log(scrollTopNoZero);
-		if(scrollTopNoZero) {
-			return;
-		}
-		refreshBox.style.top = '0vh';
-		navbar.style.marginTop = '15vh';
-		if(this.state.nowPage === 3) {
-			this.props.dispatch({
-				type: 'info/init'
-			});
-		} else if(this.state.nowPage  === 1) {
-			this.props.dispatch({
-				type: 'time/init'
-			});
-		} else {
-			this.props.dispatch({
-				type: 'now/init'
-			});
-		}
-		setTimeout(() => {
-			refreshBox.style.top = '-15vh';
-			navbar.style.marginTop = '0vh';
-		}, 1000);
-	}
-	// // 左滑行为
-	// slideLeft = () => {
-	// 	console.log('slideLeft');
-	// 	if(this.state.nowPage == 1) {
-	// 		return;
-	// 	}
-	// 	for(let i = 1; i <= 2; i++) {
-	// 		const page: any = document.querySelector(`#index-page${i}`);
-	// 		let left = Number(page.style.left.substring(0,page.style.left.length - 2));
-	// 		page.style.left = left + 100 + 'vw';
-	// 	}
-	// 	this.setState((state: any) => {
-	// 		if(state.nowPage - 1 === 2) {
-	// 			this.props.dispatch({
-	// 				type: 'info/init'
-	// 			});
-	// 		} else if(state.nowPage - 1 === 1) {
-	// 			this.props.dispatch({
-	// 				type: 'time/init'
-	// 			});
-	// 		} else {
-	// 			this.props.dispatch({
-	// 				type: 'now/init'
-	// 			});
-	// 		}
-	// 		return {
-	// 			nowPage: state.nowPage - 1,
-	// 		};
-	// 	});
-	// 	this.sidebarClose();
-	// }
-	// // 右滑行为
-	// slideRight = () => {
-	// 	console.log('slideRight');
-	// 	if(this.state.nowPage == 2) {
-	// 		return;
-	// 	}
-	// 	for(let i = 2; i >= 1; i--) {
-	// 		const page: any = document.querySelector(`#index-page${i}`);
-	// 		let left = Number(page.style.left.substring(0,page.style.left.length - 2));
-	// 		page.style.left = left - 100 + 'vw';
-	// 	}
-	// 	this.setState((state: any) => {
-	// 		if(state.nowPage + 1 === 2) {
-	// 			this.props.dispatch({
-	// 				type: 'info/init'
-	// 			});
-	// 		} else if(state.nowPage + 1 === 1) {
-	// 			this.props.dispatch({
-	// 				type: 'time/init'
-	// 			});
-	// 		} else {
-	// 			this.props.dispatch({
-	// 				type: 'now/init'
-	// 			});
-	// 		}
-	// 		return {
-	// 			nowPage: state.nowPage + 1,
-	// 		};
-	// 	});
-	// 	this.sidebarClose();
-	// }
+  // 	}
+  // }
 
-	// // 点击切换
-	// checkTab = () => {
-	// 	let page = 1;
-	// 	if(this.state.nowPage === 1) {
-	// 		page = 2;
-	// 	} 
-	// 	if(page > this.state.nowPage) {
-	// 		// 右滑
-	// 		for(let i = this.state.nowPage; i < page ; i++){
-	// 			this.slideRight();
-	// 		};
-	// 	} else {
-	// 		// 左滑
-	// 		for(let i = this.state.nowPage; i > page ; i--){
-	// 			this.slideLeft();
-	// 		};
+  // 侧边栏
+  sidebarShow = () => {
+    console.log('sidebarShow');
+    const sidebar: any = document.querySelector(`#sidebar`);
+    const page: any = document.querySelector(
+      `#index-page${this.state.nowPage}`,
+    );
+    const navbar: any = document.querySelector(`#navbar`);
+    if (sidebar.style.left === '-200px') {
+      sidebar.style.left = '0';
+      page.style.left = '200px';
+      navbar.style.left = '200px';
+    } else {
+      sidebar.style.left = '-200px';
+      page.style.left = '0vh';
+      navbar.style.left = '0vh';
+    }
+  };
+  // 关闭侧边栏
+  sidebarClose = () => {
+    console.log('sidebarClose');
+    const sidebar: any = document.querySelector(`#sidebar`);
+    const page: any = document.querySelector(
+      `#index-page${this.state.nowPage}`,
+    );
+    const navbar: any = document.querySelector(`#navbar`);
+    sidebar.style.left = '-200px';
+    page.style.left = '0vh';
+    navbar.style.left = '0vh';
+  };
 
-	// 	}
-	// }
+  // 点击页面
+  pageClick = () => {
+    console.log('pageClick');
+    // 当侧边栏存在，点击关闭
+    const sidebar: any = document.querySelector(`#sidebar`);
+    if (sidebar.style.left !== '-200px') {
+      this.sidebarClose();
+    }
+  };
 
-	// 侧边栏
-	sidebarShow = () => {
-		console.log('sidebarShow');
-		const sidebar: any = document.querySelector(`#sidebar`);
-		const page: any = document.querySelector(`#index-page${this.state.nowPage}`);
-		const navbar: any = document.querySelector(`#navbar`);
-		if(sidebar.style.left === '-200px') {
-			sidebar.style.left = '0';
-			page.style.left = '200px';
-			navbar.style.left = '200px';
-		} else {
-			sidebar.style.left = '-200px';
-			page.style.left = '0vh';
-			navbar.style.left = '0vh';
-		}
-	}
-	// 关闭侧边栏
-	sidebarClose = () => {
-		console.log('sidebarClose');
-		const sidebar: any = document.querySelector(`#sidebar`);
-		const page: any = document.querySelector(`#index-page${this.state.nowPage}`);
-		const navbar: any = document.querySelector(`#navbar`);
-		sidebar.style.left = '-200px';
-		page.style.left = '0vh';
-		navbar.style.left = '0vh';
-	}
+  // 进入添加日记
+  addNote = () => {
+    console.log('addNote');
+    history.push('/note?timeId=null');
+  };
 
-	// 点击页面
-	pageClick = () => {
-		console.log('pageClick');
-		// 当侧边栏存在，点击关闭
-		const sidebar: any = document.querySelector(`#sidebar`);
-		if(sidebar.style.left !== '-200px') {
-			this.sidebarClose();
-		}
-	}
-
-	// 进入添加日记
-	addNote = () => {
-		console.log('addNote');
-		history.push('/note?timeId=null');
-	}
-
-
-
-	render() {
-		return (
-			<div id={styles.index}>
-				{/* 刷新层 */}
-				{/* <TopBox str="refresh"></TopBox> */}
-				{/* 侧边栏 */}
-				<Sidebar
-					style={{
-						left: '-200px'
-					}}
-				></Sidebar> 
-				{/* 新建日记 */}
-				{/* 顶栏 */}
-				<div 
-					id="navbar"
-					className={commonStyle.navbar}
-					style={{
-						left: '0px'
-					}}  
-				>
-					<UnorderedListOutlined onClick={this.sidebarShow}/>
-					<span>MyNote</span>
-					{/* <span onClick={this.checkTab}>
+  render() {
+    return (
+      <div id={styles.index}>
+        {/* 刷新层 */}
+        {/* <TopBox str="refresh"></TopBox> */}
+        {/* 侧边栏 */}
+        <Sidebar
+          style={{
+            left: '-200px',
+          }}
+        ></Sidebar>
+        {/* 新建日记 */}
+        {/* 顶栏 */}
+        <div
+          id="navbar"
+          className={commonStyle.navbar}
+          style={{
+            left: '0px',
+          }}
+        >
+          <UnorderedListOutlined onClick={this.sidebarShow} />
+          <span>MyNote</span>
+          {/* <span onClick={this.checkTab}>
 						{this.state.nowPage === 1 ? 'MyNote' : 'Satisfy'}
 					</span> */}
-					<HighlightOutlined onClick={this.addNote}/>
-				</div>
-				{/* page */}
-				<div 
-					className={styles.pageBox} 
-					id="index-page"
-					onClick={this.pageClick}
-				>
-				<SlideBox
-					id="index"
-					slideDistance={200}
-					// slideLeft={this.slideLeft}
-					// slideRight={this.slideRight}
-					slideBottom={this.slideBottom}
-				>
-					<div id="index-page1" className={styles.page} style={{left: `${-(this.state.nowPage*100-100)}vw`}}>
-						<Show></Show>
-					</div>
-					{/* <div id="index-page2" className={styles.page} style={{left: `${-(this.state.nowPage*100-200)}vw`}}>
+          <HighlightOutlined onClick={this.addNote} />
+        </div>
+        {/* page */}
+        <div
+          className={styles.pageBox}
+          id="index-page"
+          onClick={this.pageClick}
+        >
+          <SlideBox
+            id="index"
+            slideDistance={200}
+            // slideLeft={this.slideLeft}
+            // slideRight={this.slideRight}
+            slideBottom={this.slideBottom}
+          >
+            <div
+              id="index-page1"
+              className={styles.page}
+              style={{ left: `${-(this.state.nowPage * 100 - 100)}vw` }}
+            >
+              <Show></Show>
+            </div>
+            {/* <div id="index-page2" className={styles.page} style={{left: `${-(this.state.nowPage*100-200)}vw`}}>
 						<Satisfy></Satisfy>
 					</div> */}
-					</SlideBox>
-				</div>
-				{/* 底栏 */}
-				{/* <div 
+          </SlideBox>
+        </div>
+        {/* 底栏 */}
+        {/* <div 
 					className={styles.tabBar}
 					style={{
 						filter: this.state.isFilter ? 'blur(3px)' : 'blur(0px)'
@@ -282,11 +284,11 @@ class Index extends React.Component<ModelIndex & {dispatch: any}> {
 						{this.state.nowPage == 2 ? <HomeFilled /> : <HomeOutlined />}
 					</div>
 				</div> */}
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 }
 
 export default connect((state: any) => ({
-	...state.index,
+  ...state.index,
 }))(Index);

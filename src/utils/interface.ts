@@ -1,7 +1,5 @@
 // 日记格式
-export interface Note {
-  
-}
+export interface Note {}
 
 // 日记显示格式
 export interface NoteShow {
@@ -11,10 +9,8 @@ export interface NoteShow {
   tags: Array<string>;
 }
 
-
 // model
-export interface ModelIndex {
-}
+export interface ModelIndex {}
 export interface ModelShow {
   notedata: Array<NoteShow>;
   minTime: number;
@@ -28,11 +24,9 @@ export interface ModelNote {
 }
 export interface ModelSetting {
   dataTxt: string;
+  minTime: number;
+  maxTime: number;
 }
 
 // 全部数据格式
-export interface AllData {
-  
-}
-
-
+export interface AllData {}

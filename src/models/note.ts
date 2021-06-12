@@ -31,7 +31,7 @@ export default {
         let note: NoteShow = {
           timeId: state.timeId,
           title: state.title,
-          tags: state.tags,
+          tags: payload.tags,
           data: payload.data,
         };
         success = yield indexedDB.put(dbName, note);
@@ -41,7 +41,7 @@ export default {
         let note: NoteShow = {
           timeId: new Date().getTime(),
           title: state.title === '请输入标题' ? '' : state.title,
-          tags: state.tags,
+          tags: payload.tags,
           data: payload.data,
         };
         success = yield indexedDB.add(dbName, note);
@@ -54,7 +54,7 @@ export default {
             tags: [],
             data: '',
             title: '请输入标题',
-          }
+          },
         });
         payload.goBack();
         yield put({
@@ -67,13 +67,17 @@ export default {
     *getNoteData({ payload }: any, { put, call, select }: any) {
       const state: ModelNote = yield select((state: any) => state.note);
       let dbName = 'NoteShow';
-      const notedata: Array<NoteShow> = yield indexedDB.getData(dbName, 'timeId', Number(payload.timeId));
+      const notedata: Array<NoteShow> = yield indexedDB.getData(
+        dbName,
+        'timeId',
+        Number(payload.timeId),
+      );
       yield put({
         type: 'changeState',
         payload: notedata[0],
-      })
+      });
     },
-    *removeNote({ payload }: any, {put, call, select}: any) {
+    *removeNote({ payload }: any, { put, call, select }: any) {
       /* 
       put: 触发action yield put({ type: 'todos/add', payload: 'Learn Dva'});
       call: 调用异步逻辑, 支持Promise const result = yield call(fetch, '/todos');
@@ -83,7 +87,10 @@ export default {
       // 选择库名
       let dbName = 'NoteShow';
       console.log(state);
-      const success: boolean = yield indexedDB.remove(dbName, Number(state.timeId));
+      const success: boolean = yield indexedDB.remove(
+        dbName,
+        Number(state.timeId),
+      );
       if (success) {
         yield put({
           type: 'changeState',
@@ -92,7 +99,7 @@ export default {
             tags: [],
             data: '',
             title: '请输入标题',
-          }
+          },
         });
         payload.goBack();
         yield put({
@@ -102,5 +109,5 @@ export default {
         app.info('日记删除失败');
       }
     },
-  }
+  },
 };
