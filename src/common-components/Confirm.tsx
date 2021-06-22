@@ -5,19 +5,23 @@
 
 import React from 'react';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import style from './styles/DateSelect.less';
+import style from './styles/Confirm.less';
 import { months } from 'moment';
 
 const defaultProps = {
-  confirm: () => {},
-  cancel: () => {},
+  confirm: () => {
+    console.log('confirm');
+  },
+  cancel: () => {
+    console.log('cancel');
+  },
   confirmStr: '确认',
   cancelStr: '取消',
   txt: '是否进行操作',
 };
 type IProps = {
   id: string;
-  style: any;
+  style?: any;
 } & Partial<typeof defaultProps>; //等同于上述注释的部分
 
 interface IState {}
@@ -34,10 +38,17 @@ class Confirm extends React.Component<IProps & typeof defaultProps> {
         id={`confirm-${this.props.id}`}
         style={{ ...this.props.style }}
       >
-        <div>{this.props.txt}</div>
-        <div>
-          <div>{this.props.cancelStr}</div>
-          <div>{this.props.confirmStr}</div>
+        <div className={style.body}>{this.props.txt}</div>
+        <div className={style.btns}>
+          <div
+            style={{
+              borderRight: '3px #000 solid',
+            }}
+            onClick={this.props.cancel}
+          >
+            {this.props.cancelStr}
+          </div>
+          <div onClick={this.props.confirm}>{this.props.confirmStr}</div>
         </div>
       </div>
     );

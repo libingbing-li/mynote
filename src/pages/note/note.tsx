@@ -18,6 +18,7 @@ import { ModelNote } from '../../utils/interface';
 import commonStyle from '@/common-styles/common.less';
 import styles from './styles/note.less';
 import app from '@/utils/app';
+import Confirm from '@/common-components/Confirm';
 
 // 编辑器的控件
 const controls: Array<ControlType> = [
@@ -52,6 +53,7 @@ interface IState {
   editorState: any;
   newtag: string;
   tags: Array<string>;
+  removeConfirm: boolean; //是否出现删除确认
 }
 
 // 该页面用于编辑展示日记
@@ -62,6 +64,7 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
     editorState: BraftEditor.createEditorState(null),
     newtag: '',
     tags: [],
+    removeConfirm: false,
   };
 
   componentDidMount() {
@@ -116,6 +119,14 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
     });
   };
 
+  removeConfirmShow = () => {
+    this.setState((prevState: IState, props) => ({
+      removeConfirm: !prevState.removeConfirm,
+    }));
+    // this.setState({
+    //   removeConfirm: true,
+    // })
+  };
   removeNote = () => {
     this.props.dispatch({
       type: 'note/removeNote',
@@ -167,7 +178,10 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
         <CheckOutlined style={{ margin: 0 }} onClick={this.saveNote} />
       </Menu.Item>
       <Menu.Item key="1" style={{ textAlign: 'center' }}>
-        <DeleteOutlined style={{ margin: 0 }} onClick={this.removeNote} />
+        <DeleteOutlined
+          style={{ margin: 0 }}
+          onClick={this.removeConfirmShow}
+        />
       </Menu.Item>
     </Menu>
   );
@@ -189,6 +203,15 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
   render() {
     return (
       <div className={styles.note}>
+        <Confirm
+          id="noteRemove"
+          txt="确认进行删除操作？"
+          confirm={this.removeNote}
+          cancel={this.removeConfirmShow}
+          style={{
+            display: this.state.removeConfirm ? 'flex' : 'none',
+          }}
+        ></Confirm>
         <div className={styles.title}>
           <LeftOutlined onClick={this.back} />
           <input
