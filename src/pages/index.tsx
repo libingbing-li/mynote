@@ -11,7 +11,7 @@ import SlideBox from '@/common-components/SlideBox';
 import TopBox from './modal/topBox';
 import Sidebar from './modal/sidebar';
 import Show from './show/show';
-import Satisfy from './satisfy/satisfy';
+import Tags from './tags/tags';
 import { ModelIndex } from '../utils/interface';
 import indexedDB from '../utils/indexedDB';
 import commonStyle from '@/common-styles/common.less';
@@ -39,137 +39,107 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
       `#index-page${this.state.nowPage}`,
     );
     const navbar: any = document.querySelector(`#navbar`);
-    let scrollTopNoZero = false;
-    switch (this.state.nowPage) {
-      case 1:
-        const t1: any = document.querySelector('#time-page1');
-        const t2: any = document.querySelector('#time-page2');
-        const t3: any = document.querySelector('#time-page3');
-        console.log(t3);
-        if (t1.scrollTop !== 0 || t2.scrollTop !== 0 || t3.scrollTop !== 0) {
-          scrollTopNoZero = true;
-        }
-        break;
-      case 2:
-        if (page.lastElementChild.lastElementChild.scrollTop !== 0) {
-          scrollTopNoZero = true;
-        }
-        break;
-      case 3:
-        const i1: any = document.querySelector('#info-page1');
-        const i2: any = document.querySelector('#info-page2');
-        const i3: any = document.querySelector('#info-page3');
-        if (i1.scrollTop !== 0 || i2.scrollTop !== 0 || i3.scrollTop !== 0) {
-          scrollTopNoZero = true;
-        }
-        break;
-    }
-    console.log(scrollTopNoZero);
-    if (scrollTopNoZero) {
-      return;
-    }
     refreshBox.style.top = '0vh';
     navbar.style.marginTop = '15vh';
-    if (this.state.nowPage === 3) {
+    if (this.state.nowPage === 1) {
       this.props.dispatch({
-        type: 'info/init',
-      });
-    } else if (this.state.nowPage === 1) {
-      this.props.dispatch({
-        type: 'time/init',
+        type: 'show/init',
       });
     } else {
-      this.props.dispatch({
-        type: 'now/init',
-      });
+      // this.props.dispatch({
+      //   type: 'satisfy/init',
+      // });
     }
     setTimeout(() => {
       refreshBox.style.top = '-15vh';
       navbar.style.marginTop = '0vh';
     }, 1000);
   };
-  // // 左滑行为
-  // slideLeft = () => {
-  // 	console.log('slideLeft');
-  // 	if(this.state.nowPage == 1) {
-  // 		return;
-  // 	}
-  // 	for(let i = 1; i <= 2; i++) {
-  // 		const page: any = document.querySelector(`#index-page${i}`);
-  // 		let left = Number(page.style.left.substring(0,page.style.left.length - 2));
-  // 		page.style.left = left + 100 + 'vw';
-  // 	}
-  // 	this.setState((state: any) => {
-  // 		if(state.nowPage - 1 === 2) {
-  // 			this.props.dispatch({
-  // 				type: 'info/init'
-  // 			});
-  // 		} else if(state.nowPage - 1 === 1) {
-  // 			this.props.dispatch({
-  // 				type: 'time/init'
-  // 			});
-  // 		} else {
-  // 			this.props.dispatch({
-  // 				type: 'now/init'
-  // 			});
-  // 		}
-  // 		return {
-  // 			nowPage: state.nowPage - 1,
-  // 		};
-  // 	});
-  // 	this.sidebarClose();
-  // }
-  // // 右滑行为
-  // slideRight = () => {
-  // 	console.log('slideRight');
-  // 	if(this.state.nowPage == 2) {
-  // 		return;
-  // 	}
-  // 	for(let i = 2; i >= 1; i--) {
-  // 		const page: any = document.querySelector(`#index-page${i}`);
-  // 		let left = Number(page.style.left.substring(0,page.style.left.length - 2));
-  // 		page.style.left = left - 100 + 'vw';
-  // 	}
-  // 	this.setState((state: any) => {
-  // 		if(state.nowPage + 1 === 2) {
-  // 			this.props.dispatch({
-  // 				type: 'info/init'
-  // 			});
-  // 		} else if(state.nowPage + 1 === 1) {
-  // 			this.props.dispatch({
-  // 				type: 'time/init'
-  // 			});
-  // 		} else {
-  // 			this.props.dispatch({
-  // 				type: 'now/init'
-  // 			});
-  // 		}
-  // 		return {
-  // 			nowPage: state.nowPage + 1,
-  // 		};
-  // 	});
-  // 	this.sidebarClose();
-  // }
+  // 左滑行为
+  slideLeft = () => {
+    console.log('slideLeft');
+    if (this.state.nowPage == 1) {
+      return;
+    }
+    for (let i = 1; i <= 2; i++) {
+      const page: any = document.querySelector(`#index-page${i}`);
+      let left = Number(
+        page.style.left.substring(0, page.style.left.length - 2),
+      );
+      page.style.left = left + 100 + 'vw';
+    }
+    this.setState((state: any) => {
+      if (state.nowPage - 1 === 2) {
+        this.props.dispatch({
+          type: 'info/init',
+        });
+      } else if (state.nowPage - 1 === 1) {
+        this.props.dispatch({
+          type: 'time/init',
+        });
+      } else {
+        this.props.dispatch({
+          type: 'now/init',
+        });
+      }
+      return {
+        nowPage: state.nowPage - 1,
+      };
+    });
+    this.sidebarClose();
+  };
+  // 右滑行为
+  slideRight = () => {
+    console.log('slideRight');
+    if (this.state.nowPage == 2) {
+      return;
+    }
+    for (let i = 2; i >= 1; i--) {
+      const page: any = document.querySelector(`#index-page${i}`);
+      let left = Number(
+        page.style.left.substring(0, page.style.left.length - 2),
+      );
+      page.style.left = left - 100 + 'vw';
+    }
+    this.setState((state: any) => {
+      if (state.nowPage + 1 === 2) {
+        this.props.dispatch({
+          type: 'info/init',
+        });
+      } else if (state.nowPage + 1 === 1) {
+        this.props.dispatch({
+          type: 'time/init',
+        });
+      } else {
+        this.props.dispatch({
+          type: 'now/init',
+        });
+      }
+      return {
+        nowPage: state.nowPage + 1,
+      };
+    });
+    this.sidebarClose();
+  };
 
-  // // 点击切换
-  // checkTab = () => {
-  // 	let page = 1;
-  // 	if(this.state.nowPage === 1) {
-  // 		page = 2;
-  // 	}
-  // 	if(page > this.state.nowPage) {
-  // 		// 右滑
-  // 		for(let i = this.state.nowPage; i < page ; i++){
-  // 			this.slideRight();
-  // 		};
-  // 	} else {
-  // 		// 左滑
-  // 		for(let i = this.state.nowPage; i > page ; i--){
-  // 			this.slideLeft();
-  // 		};
-
-  // 	}
-  // }
+  // 点击切换
+  checkTab = () => {
+    let page = 1;
+    if (this.state.nowPage === 1) {
+      page = 2;
+    }
+    if (page > this.state.nowPage) {
+      // 右滑
+      for (let i = this.state.nowPage; i < page; i++) {
+        this.slideRight();
+      }
+    } else {
+      // 左滑
+      for (let i = this.state.nowPage; i > page; i--) {
+        this.slideLeft();
+      }
+    }
+  };
 
   // 侧边栏
   sidebarShow = () => {
@@ -222,7 +192,7 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
     return (
       <div id={styles.index}>
         {/* 刷新层 */}
-        {/* <TopBox str="refresh"></TopBox> */}
+        <TopBox></TopBox>
         {/* 侧边栏 */}
         <Sidebar
           style={{
@@ -239,10 +209,10 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
           }}
         >
           <UnorderedListOutlined onClick={this.sidebarShow} />
-          <span>MyNote</span>
-          {/* <span onClick={this.checkTab}>
-						{this.state.nowPage === 1 ? 'MyNote' : 'Satisfy'}
-					</span> */}
+          {/* <span>MyNote</span> */}
+          <span onClick={this.checkTab}>
+            {this.state.nowPage === 1 ? 'MyNote' : 'Tags'}
+          </span>
           <HighlightOutlined onClick={this.addNote} />
         </div>
         {/* page */}
@@ -254,8 +224,8 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
           <SlideBox
             id="index"
             slideDistance={200}
-            // slideLeft={this.slideLeft}
-            // slideRight={this.slideRight}
+            slideLeft={this.slideLeft}
+            slideRight={this.slideRight}
             slideBottom={this.slideBottom}
           >
             <div
@@ -265,9 +235,13 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
             >
               <Show></Show>
             </div>
-            {/* <div id="index-page2" className={styles.page} style={{left: `${-(this.state.nowPage*100-200)}vw`}}>
-						<Satisfy></Satisfy>
-					</div> */}
+            <div
+              id="index-page2"
+              className={styles.page}
+              style={{ left: `${-(this.state.nowPage * 100 - 200)}vw` }}
+            >
+              <Tags></Tags>
+            </div>
           </SlideBox>
         </div>
         {/* 底栏 */}

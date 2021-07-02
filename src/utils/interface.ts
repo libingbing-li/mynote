@@ -27,6 +27,9 @@ export interface ModelSetting {
   minTime: number;
   maxTime: number;
 }
+export interface ModelTags {
+  notedata: Array<NoteShow>;
+}
 
 // 全部数据格式
 export interface AllData {}
