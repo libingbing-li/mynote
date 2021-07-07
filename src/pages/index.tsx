@@ -24,12 +24,21 @@ interface IState {
 
 class Index extends React.Component<ModelIndex & { dispatch: any }> {
   state: IState = {
-    nowPage: 1,
+    nowPage: this.props.nowPage,
   };
 
   componentDidMount = () => {
     moment.locale('zh-cn');
   };
+
+  //在本处获取新的props并更新
+  // componentWillReceiveProps = (nextProps: any) => {
+  //   console.log(123)
+  //   this.setState({
+  //     nowPage: nextProps.nowPage,
+  //   });
+  //   console.log(nextProps)
+  // };
 
   // 下拉行为 - 刷新
   slideBottom = (e: any) => {
@@ -82,6 +91,12 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
           type: 'now/init',
         });
       }
+      this.props.dispatch({
+        type: 'index/changeState',
+        payload: {
+          nowPage: state.nowPage - 1,
+        },
+      });
       return {
         nowPage: state.nowPage - 1,
       };
@@ -115,6 +130,12 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
           type: 'now/init',
         });
       }
+      this.props.dispatch({
+        type: 'index/changeState',
+        payload: {
+          nowPage: state.nowPage + 1,
+        },
+      });
       return {
         nowPage: state.nowPage + 1,
       };

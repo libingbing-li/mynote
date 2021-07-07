@@ -10,11 +10,14 @@ export interface NoteShow {
 }
 
 // model
-export interface ModelIndex {}
+export interface ModelIndex {
+  nowPage: number;
+}
 export interface ModelShow {
   notedata: Array<NoteShow>;
   minTime: number;
   maxTime: number;
+  scrollTop: number; //用于保存滚动状态
 }
 export interface ModelNote {
   timeId: number;
@@ -29,6 +32,7 @@ export interface ModelSetting {
 }
 export interface ModelTags {
   notedata: Array<NoteShow>;
+  scrollTop: number;
 }
 
 // 全部数据格式

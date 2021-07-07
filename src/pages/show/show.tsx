@@ -16,6 +16,18 @@ class Show extends React.Component<ModelShow & { dispatch: any }> {
   state: IState = {};
 
   componentDidMount = () => {
+    const show = document.querySelector('#show');
+    show?.addEventListener('scroll', (e: any) => {
+      this.props.dispatch({
+        type: 'show/changeState',
+        payload: {
+          scrollTop: show.scrollTop,
+        },
+      });
+    });
+    if (show) {
+      show.scrollTop = this.props.scrollTop;
+    }
     this.props.dispatch({
       type: 'show/openDB',
     });
@@ -67,7 +79,7 @@ class Show extends React.Component<ModelShow & { dispatch: any }> {
 
   render() {
     return (
-      <div className={styles.show}>
+      <div id="show" className={styles.show}>
         <DateSelect
           id="show"
           type={1}

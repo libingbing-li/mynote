@@ -6,6 +6,7 @@ export default {
   namespace: 'tags',
   state: {
     notedata: [],
+    scrollTop: 0,
   },
   reducers: {
     changeState(state: ModelTags, { payload }: any) {

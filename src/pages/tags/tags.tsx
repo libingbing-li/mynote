@@ -29,6 +29,21 @@ class Tags extends React.Component<
     str: '',
   };
 
+  componentDidMount = () => {
+    const tags = document.querySelector('#tags');
+    tags?.addEventListener('scroll', (e: any) => {
+      this.props.dispatch({
+        type: 'tags/changeState',
+        payload: {
+          scrollTop: tags.scrollTop,
+        },
+      });
+    });
+    if (tags) {
+      tags.scrollTop = this.props.scrollTop;
+    }
+  };
+
   showNote = (item: NoteShow) => {
     return (
       <div
@@ -64,7 +79,7 @@ class Tags extends React.Component<
 
   render() {
     return (
-      <div className={styles.show}>
+      <div className={styles.show} id="tags">
         <div className={styles.searchBox}>
           <input
             value={this.state.str}
