@@ -86,6 +86,7 @@ class Show extends React.Component<ModelShow & { dispatch: any }> {
           style={{
             width: '80vw',
             margin: '10px 10vw',
+            flex: '0 0 30px',
           }}
           returnTime={(year: number, month: number, date: number) =>
             this.getTime(year, month, date)
