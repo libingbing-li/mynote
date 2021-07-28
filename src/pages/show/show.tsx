@@ -83,6 +83,7 @@ class Show extends React.Component<ModelShow & { dispatch: any }> {
         <DateSelect
           id="show"
           type={1}
+          time={this.props.minTime}
           style={{
             width: '80vw',
             margin: '10px 10vw',
@@ -93,9 +94,7 @@ class Show extends React.Component<ModelShow & { dispatch: any }> {
           }
         ></DateSelect>
         {this.props.notedata.length === 0 ? (
-          <div className={styles.nothing}>
-            当前还没有日记，点击右上角按钮新建日记~
-          </div>
+          <div className={styles.nothing}>当前时间段不存在日记</div>
         ) : (
           this.props.notedata.map((item: NoteShow) => {
             return this.showNote(item);

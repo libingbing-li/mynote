@@ -32,6 +32,7 @@ export interface ModelSetting {
 }
 export interface ModelTags {
   notedata: Array<NoteShow>;
+  str: string;
   scrollTop: number;
 }
 

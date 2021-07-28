@@ -6,6 +6,7 @@ export default {
   namespace: 'tags',
   state: {
     notedata: [],
+    str: '',
     scrollTop: 0,
   },
   reducers: {
@@ -49,6 +50,7 @@ export default {
         type: 'changeState',
         payload: {
           notedata: arr,
+          str: payload.str,
         },
       });
     },

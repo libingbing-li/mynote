@@ -26,7 +26,7 @@ class Tags extends React.Component<
   ModelTags & { infoNote: string; nowNote: string; dispatch: any }
 > {
   state: IState = {
-    str: '',
+    str: this.props.str,
   };
 
   componentDidMount = () => {
@@ -69,6 +69,7 @@ class Tags extends React.Component<
   };
 
   search = () => {
+    if (this.state.str === '') return;
     this.props.dispatch({
       type: 'tags/search',
       payload: {
@@ -93,9 +94,9 @@ class Tags extends React.Component<
           </div>
         </div>
 
-        {this.props.notedata.length === 0 ? (
+        {this.props.notedata.length === 0 && this.props.str !== '' ? (
           <div className={styles.nothing}>
-            当前还没有日记，点击右上角按钮新建日记~
+            {`当前未搜索到对应tag '${this.props.str}' 日记`}
           </div>
         ) : (
           this.props.notedata.map((item: NoteShow) => {
