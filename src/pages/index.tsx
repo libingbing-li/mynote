@@ -41,7 +41,7 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
   // };
 
   // 下拉行为 - 刷新
-  slideBottom = (e: any) => {
+  refresh = (e: any) => {
     // 刷新
     const refreshBox: any = document.querySelector(`#refreshBox`);
     const page: any = document.querySelector(
@@ -231,7 +231,7 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
         >
           <UnorderedListOutlined onClick={this.sidebarShow} />
           {/* <span>MyNote</span> */}
-          <span onClick={this.checkTab}>
+          <span onClick={this.refresh}>
             {this.state.nowPage === 1 ? 'MyNote' : 'Tags'}
           </span>
           <HighlightOutlined onClick={this.addNote} />
@@ -244,10 +244,10 @@ class Index extends React.Component<ModelIndex & { dispatch: any }> {
         >
           <SlideBox
             id="index"
-            slideDistance={200}
+            slideDistance={170}
             slideLeft={this.slideLeft}
             slideRight={this.slideRight}
-            slideBottom={this.slideBottom}
+            // slideBottom={this.slideBottom}
           >
             <div
               id="index-page1"

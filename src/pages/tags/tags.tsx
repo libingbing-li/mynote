@@ -80,7 +80,7 @@ class Tags extends React.Component<
 
   render() {
     return (
-      <div className={styles.show} id="tags">
+      <div className={styles.show} id="tags" style={{ overflow: 'hidden' }}>
         <div className={styles.searchBox}>
           <input
             value={this.state.str}
@@ -93,16 +93,17 @@ class Tags extends React.Component<
             <SearchOutlined />
           </div>
         </div>
-
-        {this.props.notedata.length === 0 && this.props.str !== '' ? (
-          <div className={styles.nothing}>
-            {`当前未搜索到对应tag '${this.props.str}' 日记`}
-          </div>
-        ) : (
-          this.props.notedata.map((item: NoteShow) => {
-            return this.showNote(item);
-          })
-        )}
+        <div className={styles.body}>
+          {this.props.notedata.length === 0 && this.props.str !== '' ? (
+            <div className={styles.nothing}>
+              {`当前未搜索到对应tag '${this.props.str}' 日记`}
+            </div>
+          ) : (
+            this.props.notedata.map((item: NoteShow) => {
+              return this.showNote(item);
+            })
+          )}
+        </div>
       </div>
     );
   }
