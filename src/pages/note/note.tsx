@@ -35,18 +35,6 @@ const controls: Array<ControlType> = [
   'hr',
 ];
 
-// // 详情-编辑-下拉菜单
-// const menu = (
-//   <Menu>
-//     <Menu.Item key="0">
-// 			<CheckOutlined onClick={this.saveNote} />
-//     </Menu.Item>
-//     <Menu.Item key="1">
-// 			<DeleteOutlined/>
-//     </Menu.Item>
-//   </Menu>
-// );
-
 interface IState {
   isEdit: boolean;
   // 创建一个空的editorState作为初始值
@@ -54,6 +42,8 @@ interface IState {
   newtag: string;
   tags: Array<string>;
   removeConfirm: boolean; //是否出现删除确认
+  confirmShow: boolean;
+  isGiveData: boolean;
 }
 
 // 该页面用于编辑展示日记
@@ -65,6 +55,8 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
     newtag: '',
     tags: [],
     removeConfirm: false,
+    confirmShow: false,
+    isGiveData: true,
   };
 
   componentDidMount() {
@@ -91,13 +83,17 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
 
   //在本处获取新的props并更新
   componentWillReceiveProps = (nextProps: any) => {
+    // console.log('componentWillReceiveProps')
     // 此时异步操作完成，更改model数据后，在这个生命周期函数中发现props更新(此时是真正需要的props值)，然后更新state中的数据
-    if (nextProps.data === '') {
+    // isGiveData 原本为true，在获得一次editorState后变成false，这是为了防止在title更新后重置日记文本的内容
+    if (nextProps.data === '' || !this.state.isGiveData) {
       return;
     }
     this.setState({
       editorState: BraftEditor.createEditorState(nextProps.data),
+      isGiveData: false,
     });
+
     if (nextProps.tags.length === 0) {
       return;
     }
@@ -120,6 +116,7 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
   };
 
   removeConfirmShow = () => {
+    // console.log('removeConfirmShow')
     this.setState((prevState: IState, props) => ({
       removeConfirm: !prevState.removeConfirm,
     }));
@@ -137,10 +134,12 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
   };
 
   handleEditorChange = (editorState: any) => {
+    // console.log('handleEditorChange')
     this.setState({ editorState });
   };
 
   changeModelState = (proName: string, data: any) => {
+    // console.log('changeModelState',proName,data)
     this.props.dispatch({
       type: 'note/changeState',
       payload: {
@@ -171,20 +170,11 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
     });
   };
 
-  // 详情-编辑-下拉菜单
-  menu = (
-    <Menu>
-      <Menu.Item key="0" style={{ textAlign: 'center' }}>
-        <CheckOutlined style={{ margin: 0 }} onClick={this.saveNote} />
-      </Menu.Item>
-      <Menu.Item key="1" style={{ textAlign: 'center' }}>
-        <DeleteOutlined
-          style={{ margin: 0 }}
-          onClick={this.removeConfirmShow}
-        />
-      </Menu.Item>
-    </Menu>
-  );
+  confirmShow = () => {
+    this.setState((preState: IState) => ({
+      confirmShow: !preState.confirmShow,
+    }));
+  };
 
   // 后退清空数据
   back = () => {
@@ -210,6 +200,21 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
           cancel={this.removeConfirmShow}
           style={{
             display: this.state.removeConfirm ? 'flex' : 'none',
+            zIndex: 3,
+          }}
+        ></Confirm>
+        <Confirm
+          id="editGoalMore"
+          txt="请选择操作"
+          confirm={this.saveNote}
+          confirmStr="保存"
+          cancel={this.removeConfirmShow}
+          cancelStr="删除"
+          closeIcon={true}
+          close={this.confirmShow}
+          style={{
+            display: this.state.confirmShow ? 'flex' : 'none',
+            zIndex: 2,
           }}
         ></Confirm>
         <div className={styles.title}>
@@ -217,6 +222,7 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
           <input
             type="text"
             value={this.props.title}
+            readOnly={this.state.isEdit ? false : true}
             onChange={(e) => {
               this.changeModelState('title', e.target.value);
             }}
@@ -224,10 +230,7 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
           {history.location.query?.timeId === 'null' ? (
             <CheckOutlined onClick={this.saveNote} />
           ) : this.state.isEdit ? (
-            // <EllipsisOutlined onClick/>
-            <Dropdown overlay={this.menu} trigger={['click']}>
-              <EllipsisOutlined />
-            </Dropdown>
+            <EllipsisOutlined onClick={this.confirmShow} />
           ) : (
             <HighlightOutlined
               onClick={() => this.setState({ isEdit: true })}
