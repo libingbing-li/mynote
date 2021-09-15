@@ -16,6 +16,7 @@ import { ModelIndex } from '../utils/interface';
 import indexedDB from '../utils/indexedDB';
 import commonStyle from '@/common-styles/common.less';
 import styles from './index.less';
+import '@/common-styles/components.css';
 import app from '@/utils/app';
 
 interface IState {

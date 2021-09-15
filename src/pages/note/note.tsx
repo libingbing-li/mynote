@@ -44,6 +44,7 @@ interface IState {
   removeConfirm: boolean; //是否出现删除确认
   confirmShow: boolean;
   isGiveData: boolean;
+  tagsH: string; // 用于计算富文本部分的高度
 }
 
 // 该页面用于编辑展示日记
@@ -57,6 +58,7 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
     removeConfirm: false,
     confirmShow: false,
     isGiveData: true,
+    tagsH: '0px',
   };
 
   componentDidMount() {
@@ -74,10 +76,16 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
         isEdit: false,
       });
     }
+    let height = '0px';
+    const tags: any = document.querySelector('.tags');
+    if (tags) {
+      height = tags.style.height;
+    }
     // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
     // 由于dispatch是异步操作，所以此时的props是上一次的props
     this.setState({
       editorState: BraftEditor.createEditorState(this.props.data),
+      tagsH: height,
     });
   }
 
@@ -270,7 +278,19 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
           />
           <PlusOutlined onClick={this.addTag} />
         </div>
-        <div className="my-component">
+        <div
+          className={styles.braftEditor}
+          style={{
+            height:
+              history.location.query?.timeId === 'null'
+                ? `calc(100vh - 89px - ${this.state.tagsH})`
+                : `calc(100vh + 30px - ${this.state.tagsH})`,
+          }}
+        >
+          {/* 
+          -89: -39（addTag -50(tags)
+          +30: -50 (tags) + 80px(为了弥补对组件bf-content的-120px设置，在不可编辑状态下)
+          */}
           <BraftEditor
             value={this.state.editorState}
             readOnly={this.state.isEdit ? false : true}

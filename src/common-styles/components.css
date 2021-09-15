@@ -1,0 +1,15 @@
+/* .index {
+  background:#000;
+} */
+.bf-container {
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+.bf-controlbar {
+  /* flex: 0 0 auto; */
+}
+.bf-content {
+  /* flex: 1 1 auto; */
+  box-sizing: border-box;
+  height: calc( 100% - 120px) !important;
+}
