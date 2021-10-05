@@ -282,9 +282,10 @@ class Note extends React.Component<ModelNote & { dispatch: any }> {
           className={styles.braftEditor}
           style={{
             height:
-              history.location.query?.timeId === 'null'
-                ? `calc(100vh - 89px - ${this.state.tagsH})`
-                : `calc(100vh + 30px - ${this.state.tagsH})`,
+              history.location.query?.timeId !== 'null' &&
+              this.state.isEdit === false
+                ? `calc(100vh + 30px - ${this.state.tagsH})`
+                : `calc(100vh - 100px - ${this.state.tagsH})`,
           }}
         >
           {/* 
