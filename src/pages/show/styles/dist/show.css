@@ -1,0 +1,83 @@
+.show {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: calc(100vh - 50px);
+  padding: 15px 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.show .noteShow {
+  box-sizing: border-box;
+  position: relative;
+  width: 80vw;
+  border: solid 3px #000;
+  padding: 10px 15px;
+  margin: 15px 0;
+}
+.show .noteShow .noteShow_time {
+  text-align: right;
+  padding-bottom: 5px;
+}
+.show .noteShow .noteShow_title {
+  font-size: 1.3em;
+  text-align: left;
+  border-bottom: solid 3px #000;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.show .noteShow .noteShow_data {
+  text-align: left;
+  margin: 10px 0;
+  max-height: 200px;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+.show .noteShow .noteShow_tags {
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.show .noteShow .noteShow_tags span {
+  display: inline-block;
+  height: 20px;
+  font-size: 0.8em;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 3px;
+  color: #555;
+  background: #eee;
+  padding: 0 5px;
+  margin: 0 10px 0 0;
+}
+.show .searchBox {
+  display: flex;
+  width: 90vw;
+  justify-content: space-between;
+  flex: 0 0 30px;
+  margin-bottom: 10px;
+}
+.show .searchBox input {
+  border: none;
+  border-bottom: #000 solid 3px;
+  width: 80vw;
+  height: 30px;
+}
+.show .searchBox div {
+  text-align: center;
+  line-height: 30px;
+  font-size: 20px;
+}
+.show .body {
+  height: calc(100vh - 30px);
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
